@@ -1,0 +1,13 @@
+{% extends 'security_management/auth_base.html' %}
+{% block title %}Register | Recipe Reco{% endblock %}
+{% block content %}
+<h2>🚀 Join Recipe Reco</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    {% include 'security_management/atoms/field.html' with field=field %}
+    {% endfor %}
+    {% include 'security_management/atoms/button.html' with text="Create Account" %}
+</form>
+<p class="auth-footer">Already have an account? <a href="{% url 'login' %}">Sign in here</a></p>
+{% endblock %}

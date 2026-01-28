@@ -1,0 +1,84 @@
+<div class="form-group">
+    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {{ field }}
+    {% if field.errors %}
+    <div class="field-error">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+        </svg>
+        {{ field.errors }}
+    </div>
+    {% endif %}
+    {% if field.help_text %}
+    <small class="field-help">{{ field.help_text }}</small>
+    {% endif %}
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 22px;
+        text-align: left;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #4CAF50;
+        outline: none;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #999;
+    }
+
+    .field-error {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #e53e3e;
+        font-size: 0.85rem;
+        margin-top: 8px;
+    }
+
+    .field-error svg {
+        fill: #e53e3e;
+        flex-shrink: 0;
+    }
+
+    .field-help {
+        display: block;
+        color: #666;
+        font-size: 0.85rem;
+        margin-top: 6px;
+    }
+</style>

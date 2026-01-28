@@ -1,0 +1,59 @@
+{% extends 'recipe/base.html' %}
+{% block title %}Delete Account | Recipe Reco{% endblock %}
+{% block content %}
+<style>
+    .delete-confirm-wrapper {
+        max-width: 500px;
+        margin: 100px auto;
+        text-align: center;
+    }
+
+    .confirm-card {
+        background: white;
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .warning-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    h1 {
+        color: #dc3545;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+</style>
+
+<div class="delete-confirm-wrapper">
+    <div class="confirm-card">
+        <span class="warning-icon">⚠️</span>
+        <h1>Are you sure?</h1>
+        <p>This will permanently delete your account, all your recipes, and your profile data. This action cannot be
+            undone.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="buttons">
+                <a href="{% url 'profile_edit' %}" class="btn btn-secondary">No, take me back</a>
+                <button type="submit" class="btn btn-danger">Yes, delete my account</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

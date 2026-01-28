@@ -1,0 +1,41 @@
+<div class="profile-form-container">
+    {% include 'security_management/molecules/profile_header.html' %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h4>Personal Information</h4>
+            {% for field in u_form %}
+                {% include 'security_management/atoms/field.html' with field=field %}
+            {% endfor %}
+        </div>
+
+        <div class="form-section">
+            <h4>Additional Details</h4>
+            {% for field in p_form %}
+                {% include 'security_management/atoms/field.html' with field=field %}
+            {% endfor %}
+        </div>
+
+        {% include 'security_management/atoms/button.html' with text="Update Profile" %}
+    </form>
+</div>
+
+<style>
+.profile-form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.profile-form-container h4 {
+    margin-bottom: 10px;
+    color: #688f41;
+}
+.form-section {
+    margin-bottom: 20px;
+}
+</style>

@@ -1,0 +1,238 @@
+{% extends 'recipe/base.html' %}
+{% block title %}Welcome | Recipe Reco{% endblock %}
+{% block content %}
+<style>
+    .hero-section {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-emoji {
+        font-size: 6rem;
+        margin-bottom: 20px;
+        display: block;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 20px;
+        line-height: 1.1;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-title span {
+        background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 40px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero-btn {
+        padding: 18px 45px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-btn-primary {
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        color: white;
+        box-shadow: 0 8px 30px rgba(76, 175, 80, 0.4);
+    }
+
+    .hero-btn-primary:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(76, 175, 80, 0.5);
+        color: white;
+    }
+
+    .hero-btn-secondary {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-4px);
+        color: white;
+    }
+
+    .features-section {
+        padding: 60px 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 35px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 12px;
+    }
+
+    .feature-desc {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+
+        .hero-emoji {
+            font-size: 4rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-btn {
+            width: 100%;
+            max-width: 280px;
+            justify-content: center;
+        }
+    }
+</style>
+
+<section class="hero-section">
+    <div class="hero-content">
+        <span class="hero-emoji">🍳</span>
+        <h1 class="hero-title">Welcome to <span>Recipe Reco</span></h1>
+        <p class="hero-subtitle">Discover, create, and share your favorite recipes with our beautiful and easy-to-use
+            recipe management platform.</p>
+
+        <div class="hero-buttons">
+            <a href="{% url 'login' %}" class="hero-btn hero-btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z" />
+                </svg>
+                Sign In
+            </a>
+            <a href="{% url 'register' %}" class="hero-btn hero-btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+                Create Account
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">📝</span>
+            <h3 class="feature-title">Create Recipes</h3>
+            <p class="feature-desc">Easily add your favorite recipes with ingredients, instructions, and categories.</p>
+        </div>
+
+        <div class="feature-card">
+            <span class="feature-icon">🔍</span>
+            <h3 class="feature-title">Search & Filter</h3>
+            <p class="feature-desc">Find recipes quickly with powerful search and category filtering options.</p>
+        </div>
+
+        <div class="feature-card">
+            <span class="feature-icon">📱</span>
+            <h3 class="feature-title">Access Anywhere</h3>
+            <p class="feature-desc">View your recipes on any device with our responsive design.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

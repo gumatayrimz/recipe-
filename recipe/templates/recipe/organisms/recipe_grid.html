@@ -1,0 +1,71 @@
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+    {% include 'recipe/molecules/recipe_card.html' with recipe=recipe %}
+    {% empty %}
+    <div class="empty-state-card">
+        <span class="empty-icon">📭</span>
+        <h3>No recipes found</h3>
+        <p>Maybe try a different search or category?</p>
+        <a href="{% url 'recipe_create' %}" class="btn-create-now">Add a Recipe Now</a>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .recipe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 10px 0;
+    }
+
+    .empty-state-card {
+        grid-column: 1 / -1;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 60px;
+        border-radius: 24px;
+        text-align: center;
+        border: 2px dashed rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .empty-state-card h3 {
+        font-size: 1.5rem;
+        color: #2D3748;
+        margin-bottom: 10px;
+    }
+
+    .empty-state-card p {
+        color: #718096;
+        margin-bottom: 25px;
+    }
+
+    .btn-create-now {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-create-now:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    @media (max-width: 640px) {
+        .recipe-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

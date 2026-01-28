@@ -1,0 +1,207 @@
+{% extends 'recipe/base.html' %}
+{% block title %}Delete Recipe | Recipe Reco{% endblock %}
+{% block content %}
+<style>
+    .delete-wrapper {
+        max-width: 550px;
+        margin: 60px auto;
+    }
+
+    .delete-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 0.6s ease-out;
+        text-align: center;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .delete-header {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 50%, #e53e3e 100%);
+        padding: 40px;
+        position: relative;
+    }
+
+    .delete-header::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50% 50% 0 0;
+    }
+
+    .delete-emoji {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .delete-title {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 0;
+        text-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-body {
+        padding: 50px 40px 40px;
+    }
+
+    .delete-message {
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .recipe-name {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+
+    .warning-text {
+        background: #fff5f5;
+        border: 1px solid #feb2b2;
+        border-radius: 12px;
+        padding: 15px 20px;
+        color: #c53030;
+        font-size: 0.9rem;
+        margin: 25px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .delete-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 25px;
+    }
+
+    .delete-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .delete-btn.cancel {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .delete-btn.confirm {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .delete-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-btn svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+
+    @media (max-width: 600px) {
+        .delete-wrapper {
+            margin: 30px auto;
+        }
+
+        .delete-header {
+            padding: 30px 25px;
+        }
+
+        .delete-body {
+            padding: 35px 25px 30px;
+        }
+
+        .delete-title {
+            font-size: 1.5rem;
+        }
+
+        .delete-actions {
+            flex-direction: column;
+        }
+
+        .delete-btn {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="delete-wrapper">
+    <div class="delete-card">
+        <div class="delete-header">
+            <span class="delete-emoji">⚠️</span>
+            <h1 class="delete-title">Delete Recipe</h1>
+        </div>
+
+        <div class="delete-body">
+            <p class="delete-message">Are you sure you want to delete</p>
+            <p class="recipe-name">{{ recipe.name }}</p>
+
+            <div class="warning-text">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                </svg>
+                This action cannot be undone!
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="delete-actions">
+                    <a href="{% url 'recipe_list' %}" class="delete-btn cancel">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                        Cancel
+                    </a>
+                    <button type="submit" class="delete-btn confirm">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                        </svg>
+                        Yes, Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

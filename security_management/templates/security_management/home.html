@@ -1,0 +1,53 @@
+{% extends 'recipe/base.html' %}
+{% block title %}Home | Recipe Reco{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h1>Welcome to Recipe Reco</h1>
+    <p>Discover, create, and share your favorite recipes!</p>
+
+    <div class="home-actions">
+        <a href="{% url 'login' %}" class="btn">Login</a>
+        <a href="{% url 'register' %}" class="btn">Sign Up</a>
+    </div>
+
+
+</div>
+
+<style>
+.home-container {
+    max-width: 500px;
+    margin: 80px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+}
+.home-container h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+.home-actions {
+    margin-top: 30px;
+}
+.home-actions .btn {
+    margin: 10px;
+}
+.page-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+.page-nav a {
+    color: #4CAF50;
+    font-weight: 600;
+    text-decoration: none;
+}
+.page-nav a:hover { text-decoration: underline; }
+.nav-disabled {
+    color: #ccc;
+    font-weight: 600;
+}
+</style>
+{% endblock %}

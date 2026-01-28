@@ -1,0 +1,242 @@
+<div class="recipe-card" data-category="{{ recipe.category }}">
+    <div class="card-image-wrapper">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="recipe-image">
+        {% else %}
+        <div class="recipe-image-placeholder">
+            <span class="placeholder-icon">🍳</span>
+        </div>
+        {% endif %}
+        <div class="category-badge {{ recipe.category }}">
+            {{ recipe.get_category_display }}
+        </div>
+        <div class="difficulty-badge {{ recipe.difficulty }}">
+            {{ recipe.get_difficulty_display }}
+        </div>
+    </div>
+    <div class="card-content">
+        <h3 class="recipe-name">{{ recipe.name }}</h3>
+
+        <div class="recipe-meta-icons">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24" width="16" height="16">
+                    <path
+                        d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
+                </svg>
+                <span>{{ recipe.prep_time|add:recipe.cook_time }}m</span>
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24" width="16" height="16">
+                    <path
+                        d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+                <span>{{ recipe.servings }}</span>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a href="{% url 'recipe_detail' recipe.pk %}" class="btn-view">View Detail</a>
+            {% if recipe.author == user %}
+            <div class="owner-actions">
+                <a href="{% url 'recipe_update' recipe.pk %}" class="action-edit" title="Edit">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path
+                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                    </svg>
+                </a>
+                <a href="{% url 'recipe_delete' recipe.pk %}" class="action-delete" title="Delete">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .recipe-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .recipe-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-image-wrapper {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .recipe-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .recipe-card:hover .recipe-image {
+        transform: scale(1.1);
+    }
+
+    .recipe-image-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
+
+    .category-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 5px 12px;
+        border-radius: 30px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: white;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+    }
+
+    /* Category Colors */
+    .category-badge.breakfast {
+        background: rgba(255, 167, 38, 0.9);
+    }
+
+    .category-badge.lunch {
+        background: rgba(102, 187, 106, 0.9);
+    }
+
+    .category-badge.dinner {
+        background: rgba(92, 107, 192, 0.9);
+    }
+
+    .category-badge.snacks {
+        background: rgba(239, 83, 80, 0.9);
+    }
+
+    .category-badge.other {
+        background: rgba(120, 144, 156, 0.9);
+    }
+
+    .difficulty-badge {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .difficulty-badge.easy {
+        background: #4CAF50;
+    }
+
+    .difficulty-badge.medium {
+        background: #FF9800;
+    }
+
+    .difficulty-badge.hard {
+        background: #F44336;
+    }
+
+    .card-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .recipe-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0 0 15px 0;
+        color: #2D3748;
+        line-height: 1.3;
+    }
+
+    .recipe-meta-icons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #718096;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .meta-item svg {
+        fill: #A0AEC0;
+    }
+
+    .card-footer {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .btn-view {
+        flex-grow: 1;
+        text-align: center;
+        padding: 10px;
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view:hover {
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        transform: scale(1.02);
+    }
+
+    .owner-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .owner-actions a {
+        color: #718096;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+    }
+
+    .owner-actions a:hover.action-edit {
+        color: #4CAF50;
+    }
+
+    .owner-actions a:hover.action-delete {
+        color: #dc3545;
+    }
+</style>

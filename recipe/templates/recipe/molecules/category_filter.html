@@ -1,0 +1,67 @@
+<form method="GET" action="" class="category-filter">
+    <div class="filter-wrapper">
+        <svg class="filter-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z" />
+        </svg>
+        <select name="category" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for value, label in categories %}
+            <option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if query %}
+    <input type="hidden" name="q" value="{{ query }}">
+    {% endif %}
+</form>
+
+<style>
+    .category-filter {
+        margin: 0;
+    }
+
+    .filter-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .filter-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        fill: #999;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .category-filter select {
+        padding: 12px 20px 12px 44px !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 12px !important;
+        font-size: 0.95rem !important;
+        background: #fafafa !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+        min-width: 180px;
+        font-family: inherit;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px !important;
+    }
+
+    .category-filter select:focus {
+        border-color: #4CAF50 !important;
+        outline: none !important;
+        background-color: white !important;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1) !important;
+    }
+
+    .category-filter select:hover {
+        border-color: #ccc !important;
+    }
+</style>

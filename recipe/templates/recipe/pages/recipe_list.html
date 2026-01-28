@@ -1,0 +1,281 @@
+{% extends 'recipe/base.html' %}
+{% block title %}My Recipes | Recipe Reco{% endblock %}
+{% block content %}
+<style>
+    .recipe-list-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 1.1rem;
+    }
+
+    .controls-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .search-filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        flex: 1;
+    }
+
+    /* Override search form styles */
+    .search-form {
+        display: flex;
+        gap: 10px;
+        margin: 0 !important;
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 12px 18px !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 12px !important;
+        font-size: 0.95rem !important;
+        transition: all 0.3s ease !important;
+        background: #fafafa !important;
+    }
+
+    .search-input:focus {
+        border-color: #4CAF50 !important;
+        outline: none !important;
+        background: white !important;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1) !important;
+    }
+
+    /* Override category filter */
+    .category-filter {
+        margin: 0 !important;
+    }
+
+    .category-filter select {
+        padding: 12px 20px !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 12px !important;
+        font-size: 0.95rem !important;
+        background: #fafafa !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+        min-width: 180px;
+    }
+
+    .category-filter select:focus {
+        border-color: #4CAF50 !important;
+        outline: none !important;
+        background: white !important;
+    }
+
+    .add-recipe-btn {
+        white-space: nowrap;
+    }
+
+    /* Recipe Table Improvements */
+    .table-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .recipe-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
+    .recipe-table th {
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%) !important;
+        color: white;
+        padding: 18px 20px !important;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .recipe-table td {
+        padding: 18px 20px !important;
+        border-bottom: 1px solid #eee !important;
+        vertical-align: middle;
+    }
+
+    .recipe-table tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .recipe-table tr:hover {
+        background-color: rgba(76, 175, 80, 0.05) !important;
+    }
+
+    .recipe-table a {
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .action-links {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-link {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        text-decoration: none !important;
+    }
+
+    .action-link.view {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white !important;
+    }
+
+    .action-link.edit {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white !important;
+    }
+
+    .action-link.delete {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+        color: white !important;
+    }
+
+    .action-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px !important;
+        color: #666;
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .empty-state-text {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    /* Page Navigation */
+    .page-nav {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .page-nav a {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 12px 25px;
+        border-radius: 10px;
+        color: #4CAF50 !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .page-nav a:hover {
+        background: #4CAF50;
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .nav-disabled {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 12px 25px;
+        border-radius: 10px;
+        color: #999 !important;
+    }
+
+    @media (max-width: 768px) {
+        .controls-section {
+            flex-direction: column;
+        }
+
+        .search-filter-group {
+            width: 100%;
+        }
+
+        .search-form {
+            width: 100%;
+        }
+
+        .add-recipe-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .action-links {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .action-link {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="recipe-list-wrapper">
+    <div class="page-header">
+        <h1 class="page-title">🍽️ My Recipes</h1>
+        <p class="page-subtitle">Manage and explore your delicious recipe collection</p>
+    </div>
+
+    <div class="controls-section">
+        <div class="search-filter-group">
+            {% include 'recipe/atoms/search_input.html' %}
+            {% include 'recipe/molecules/category_filter.html' %}
+        </div>
+        <a href="{% url 'recipe_create' %}" class="btn add-recipe-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+            </svg>
+            Add New Recipe
+        </a>
+    </div>
+
+    <div class="grid-container">
+        {% include 'recipe/organisms/recipe_grid.html' %}
+    </div>
+</div>
+{% endblock %}

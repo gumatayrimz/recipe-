@@ -1,0 +1,1 @@
+default_app_config = 'security_management.apps.SecurityManagementConfig'

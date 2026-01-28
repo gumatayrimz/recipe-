@@ -1,0 +1,104 @@
+<table class="recipe-table">
+    <thead>
+        <tr>
+            <th>
+                <span class="th-content">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 000 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z" />
+                    </svg>
+                    Recipe Name
+                </span>
+            </th>
+            <th>
+                <span class="th-content">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                    </svg>
+                    Actions
+                </span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for recipe in recipes %}
+        {% include 'recipe/molecules/recipe_row.html' with recipe=recipe %}
+        {% empty %}
+        <tr>
+            <td colspan="2" class="empty-state">
+                <span class="empty-icon">📭</span>
+                <p class="empty-text">No recipes found</p>
+                <p class="empty-subtext">Start by adding your first recipe!</p>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+    .recipe-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: transparent;
+    }
+
+    .recipe-table th {
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        color: white;
+        padding: 18px 24px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .th-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .th-content svg {
+        opacity: 0.9;
+    }
+
+    .recipe-table td {
+        padding: 18px 24px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+    }
+
+    .recipe-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .recipe-table tbody tr:hover {
+        background-color: rgba(76, 175, 80, 0.04);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px !important;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .empty-text {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 8px 0;
+    }
+
+    .empty-subtext {
+        font-size: 1rem;
+        color: #666;
+        margin: 0;
+    }
+</style>

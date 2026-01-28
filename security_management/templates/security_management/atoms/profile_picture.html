@@ -1,0 +1,25 @@
+<div class="profile-picture">
+    {% if user.profile.profile_picture %}
+        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+    {% else %}
+        <div class="avatar-placeholder">{{ user.username|slice:":1"|upper }}</div>
+    {% endif %}
+</div>
+
+<style>
+.profile-picture img,
+.avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+    display: block;
+    margin: 0 auto;
+    background-color: #e0e0e0;
+    font-size: 2.5rem;
+    line-height: 100px;
+    text-align: center;
+    color: #555;
+}
+</style>

@@ -1,0 +1,259 @@
+{% extends 'recipe/base.html' %}
+{% block title %}{% if recipe %}Edit Recipe{% else %}Add Recipe{% endif %} | Recipe Reco{% endblock %}
+{% block content %}
+<style>
+    .form-wrapper {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .form-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 50%, #1B5E20 100%);
+        padding: 40px;
+        text-align: center;
+        position: relative;
+    }
+
+    .form-header::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50% 50% 0 0;
+    }
+
+    .form-emoji {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .form-title {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 0;
+        text-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-body {
+        padding: 50px 40px 40px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #4CAF50;
+        outline: none;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .form-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .form-btn.back {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .form-btn.save {
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .form-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-btn svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+
+    .error {
+        color: #e53e3e;
+        font-size: 0.85rem;
+        margin-top: 6px;
+    }
+
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #4CAF50;
+        margin: 30px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    @media (min-width: 641px) {
+        .form-grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .form-header {
+            padding: 30px 25px;
+        }
+
+        .form-body {
+            padding: 35px 25px 30px;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .form-btn {
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="form-wrapper">
+    <div class="form-card">
+        <div class="form-header">
+            <span class="form-emoji">{% if recipe %}✏️{% else %}➕{% endif %}</span>
+            <h1 class="form-title">{% if recipe %}Edit Recipe{% else %}Add New Recipe{% endif %}</h1>
+        </div>
+
+        <div class="form-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-section-title">Core Information</div>
+                {% include 'recipe/atoms/field.html' with field=form.name %}
+
+                <div class="form-row">
+                    {% include 'recipe/atoms/field.html' with field=form.category %}
+                    {% include 'recipe/atoms/field.html' with field=form.difficulty %}
+                </div>
+
+                <div class="form-section-title">Preparation & Serving</div>
+                <div class="form-grid-4">
+                    {% include 'recipe/atoms/field.html' with field=form.prep_time %}
+                    {% include 'recipe/atoms/field.html' with field=form.cook_time %}
+                    {% include 'recipe/atoms/field.html' with field=form.servings %}
+                    {% include 'recipe/atoms/field.html' with field=form.is_public %}
+                </div>
+
+                <div class="form-section-title">Details & Media</div>
+                {% include 'recipe/atoms/field.html' with field=form.image %}
+                {% include 'recipe/atoms/field.html' with field=form.ingredients %}
+                {% include 'recipe/atoms/field.html' with field=form.instructions %}
+
+                <div class="form-actions">
+                    <a href="{{ previous_url|default:request.META.HTTP_REFERER|default:'/' }}" class="form-btn back">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                        </svg>
+                        Back
+                    </a>
+                    <button type="submit" class="form-btn save">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" />
+                        </svg>
+                        Save Recipe
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
